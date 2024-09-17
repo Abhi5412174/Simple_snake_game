@@ -6,6 +6,7 @@ pygame.init()
 green = (0, 255, 0)
 red = (255, 0, 0)
 black = (0, 0, 0)
+white = (255, 255, 255)
 
 # creating window 
 screen_witdh = 900
@@ -23,6 +24,22 @@ def text_screen(text, color, x, y):
 def plot_snake(gameWindow, color, snk_list, snake_size):
     for x,y in snk_list:
         pygame.draw.rect(gameWindow, color, [x, y, snake_size, snake_size] )
+        
+def welcome():
+    quit_game = False
+    while not quit_game:
+        gameWindow.fill(black)
+        text_screen("Welcome to My First Game", white, 320, 270)
+        text_screen("Press Space to Play", white, 360, 300)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit_game = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    gameloop()
+        
+        pygame.display.update()
+        clock.tick(60)
     
 #creating a game loop
 def gameloop(): 
@@ -59,7 +76,7 @@ def gameloop():
                 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
-                        gameloop()
+                        welcome()
             
         else:   
             for event in pygame.event.get():
@@ -82,6 +99,10 @@ def gameloop():
                     if event.key == pygame.K_UP:
                         velocity_y = - init_velocity
                         velocity_x = 0
+                    
+                    #cheat code (Q)
+                    if event.key == pygame.K_q:
+                        score += 20
                 
             snake_x += velocity_x
             snake_y += velocity_y  
@@ -96,7 +117,7 @@ def gameloop():
                     highscore = score
                         
             gameWindow.fill(black)
-            text_screen("Score: "+ str(score) + "   Highscore: "+str(highscore), red, 5, 5)
+            text_screen("Score: "+ str(score) + "   Highscore: "+str(highscore), green, 5, 5)
             pygame.draw.rect(gameWindow,green, [food_x, food_y, snake_size, snake_size] )
             
             head = []
@@ -121,4 +142,5 @@ def gameloop():
     pygame.quit()
     quit()
     
-gameloop()
+if __name__ == '__main__':
+    welcome()
